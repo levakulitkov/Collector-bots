@@ -933,6 +933,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 4086266605180948896, guid: 9a3d19acf3d50e348af41537fb2b8766, type: 3}
+      propertyPath: m_VertexColorAlwaysGammaSpace
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5134600952168552684, guid: 9a3d19acf3d50e348af41537fb2b8766, type: 3}
       propertyPath: m_Name
       value: Base
@@ -986,7 +990,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7792255633364436914, guid: 9a3d19acf3d50e348af41537fb2b8766, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a3d19acf3d50e348af41537fb2b8766, type: 3}
