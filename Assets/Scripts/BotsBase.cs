@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,14 +10,16 @@ public class BotsBase : MonoBehaviour
 
     private ScannerModule _scanner;
     private List<CollectorBot> _bots;
-    private HashSet<Resource> _detectedResources;
+    private List<Resource> _freeResources;
+    private List<Resource> _busyResources;
     private int _resourceCount;
+    private Coroutine _findingCoroutine;
 
     private void Awake()
     {
         _scanner = GetComponent<ScannerModule>();
         _bots = new List<CollectorBot>(_startBots);
-        _detectedResources = new HashSet<Resource>();
+        _busyResources = new List<Resource>();
 
         foreach (CollectorBot bot in _bots)
             bot.AssignBase(transform);
@@ -32,35 +35,53 @@ public class BotsBase : MonoBehaviour
         _scanner.ScanningCompleted -= OnGetScanningResults;
     }
 
-    private void Update()
+    private void Start()
     {
-        AssignTargetResourcesForBots();
+        StartFindingResources();
     }
 
-    public void AddResource(Resource resource)
+    public void AddResource(CollectorBot bot, Resource resource)
     {
         _resourceCount++;
-        Destroy(resource.gameObject);
         Debug.Log(_resourceCount);
+        
+        _busyResources.Remove(resource);
+        
+        Destroy(resource.gameObject);
+        
+        TryAssignTargetResourceForBot(bot);
+    }
+
+    private void StartFindingResources()
+    {
+        _findingCoroutine ??= StartCoroutine(_scanner.FindFreeResources(_busyResources.ToArray()));
     }
 
     private void OnGetScanningResults(Resource[] detectedResources)
     {
-        foreach (Resource resource in detectedResources)
-            _detectedResources.Add(resource);
+        _freeResources = detectedResources.ToList();
+
+        foreach (CollectorBot bot in _bots.Where(bot => !bot.HasTarget))
+            if (!TryAssignTargetResourceForBot(bot))
+                break;
+
+        _findingCoroutine = null;
     }
 
-    private void AssignTargetResourcesForBots()
+    private bool TryAssignTargetResourceForBot(CollectorBot bot)
     {
-        Resource freeResource = _detectedResources.FirstOrDefault(resource => !resource.IsBusy);
-        if (freeResource is not null)
+        if (_freeResources.Count == 0)
         {
-            CollectorBot freeBot = _bots.FirstOrDefault(bot => !bot.HasTarget);
-            if (freeBot is not null)
-            {
-                freeResource.DoBusy();
-                freeBot.GetTarget(freeResource.transform);
-            }
+            StartFindingResources();
+            return false;
         }
+
+        Resource resource = _freeResources.Last();
+        _freeResources.Remove(resource);
+        _busyResources.Add(resource);
+
+        bot.GetTarget(resource.transform);
+
+        return true;
     }
 }

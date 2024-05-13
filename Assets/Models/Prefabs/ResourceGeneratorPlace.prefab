@@ -97,4 +97,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _template: {fileID: 6283034046953985577, guid: 570a136b010853149836b7dfce7a0097, type: 3}
-  _interval: 1
+  _interval: 2

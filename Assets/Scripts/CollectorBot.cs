@@ -1,19 +1,19 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Mover), typeof(LiftPickModule))]
+[RequireComponent(typeof(Mover))]
 public class CollectorBot : MonoBehaviour
 {
     private Transform _basePosition;
     private Transform _target;
     private Mover _mover;
-    private LiftPickModule _liftPickModule;
+    private Bag _bag;
 
-    public bool HasTarget => _target is not null;
+    public bool HasTarget => _target != null;
 
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _liftPickModule = GetComponent<LiftPickModule>();
+        _bag = GetComponentInChildren<Bag>();
     }
 
     private void FixedUpdate()
@@ -24,19 +24,21 @@ public class CollectorBot : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Resource resource)
-            && resource.transform.Equals(_target))
+        if (other.TryGetComponent(out Resource freeResource)
+            && freeResource.transform.Equals(_target))
         {
-            _liftPickModule.PickUp(resource);
+            _bag.Add(freeResource);
             _target = _basePosition;
         }
         else if (_target == _basePosition)
         {
             var botsBase = other.GetComponentInParent<BotsBase>();
-            if (botsBase is not null)
+            
+            if (botsBase != null)
             {
-                _liftPickModule.GiveResource(botsBase);
                 _target = null;
+                
+                botsBase.AddResource(this, _bag.GetResource());
             }
         }
     }

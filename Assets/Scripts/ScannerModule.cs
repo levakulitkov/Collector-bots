@@ -6,42 +6,35 @@ using UnityEngine;
 public class ScannerModule : MonoBehaviour
 {
     [SerializeField] private float _interval;
-
-    private Coroutine _coroutine;
     
     public event Action<Resource[]> ScanningCompleted;
-
-    private void OnEnable()
-    {
-        StartScan();
-    }
     
-    private void StartScan()
+    public IEnumerator FindFreeResources(Resource[] busyResources)
     {
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
-
-        _coroutine = StartCoroutine(ScanRoutine());
-    }
-
-    private IEnumerator ScanRoutine()
-    {
-        yield return new WaitForEndOfFrame();
-        
         var wait = new WaitForSeconds(_interval);
         
-        while (enabled)
+        while (true)
         {
-            SimulateScanning();
+            Resource[] detectedResources = SimulateScanning();
+            Resource[] freeResources = detectedResources
+                .Except(busyResources)
+                .Where(resource => resource.enabled)
+                .ToArray();
+            
+            if (freeResources.Length > 0)
+            {
+                ScanningCompleted?.Invoke(freeResources);
+                yield break;
+            }
             
             yield return wait;
         }
     }
 
-    private void SimulateScanning()
+    private Resource[] SimulateScanning()
     {
         Resource[] resources = FindObjectsOfType<Resource>();
-        
-        ScanningCompleted?.Invoke(resources.ToArray());
+
+        return resources;
     }
 }
