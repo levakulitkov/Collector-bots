@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class ScannerModule : MonoBehaviour
 {
-    [SerializeField] private float _interval;
+    [SerializeField] private float _interval = 1f;
+    [SerializeField] private int _maxColliders = 16;
+    [SerializeField] private int _radius = 100;
     
     public event Action<Resource[]> ScanningCompleted;
     
@@ -15,7 +18,7 @@ public class ScannerModule : MonoBehaviour
         
         while (true)
         {
-            Resource[] detectedResources = SimulateScanning();
+            Resource[] detectedResources = ScanWithOverlapSphere();
             Resource[] freeResources = detectedResources
                 .Except(busyResources)
                 .Where(resource => resource.enabled)
@@ -31,10 +34,18 @@ public class ScannerModule : MonoBehaviour
         }
     }
 
-    private Resource[] SimulateScanning()
+    private Resource[] ScanWithOverlapSphere()
     {
-        Resource[] resources = FindObjectsOfType<Resource>();
+        Collider[] hitColliders = new Collider[_maxColliders];
+        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _radius, hitColliders, LayerMask.GetMask("Resource"));
 
-        return resources;
+        var resources = new List<Resource>();
+        for (int i = 0; i < numColliders; i++)
+        {
+            if (hitColliders[i].TryGetComponent(out Resource resource))
+                resources.Add(resource);
+        }
+
+        return resources.ToArray();
     }
 }

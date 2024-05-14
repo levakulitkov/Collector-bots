@@ -31,10 +31,10 @@ public class ResourceGenerator : MonoBehaviour
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = StartCoroutine(GenerationRoutine());
+        _coroutine = StartCoroutine(GeneratingRoutine());
     }
 
-    private IEnumerator GenerationRoutine()
+    private IEnumerator GeneratingRoutine()
     {
         var wait = new WaitForSeconds(_interval);
         
