@@ -80,7 +80,7 @@ public class BotsBase : MonoBehaviour
         _freeResources.Remove(resource);
         _busyResources.Add(resource);
 
-        bot.GetTarget(resource.transform);
+        bot.SetTarget(resource.transform);
 
         return true;
     }

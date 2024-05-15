@@ -58,7 +58,7 @@ public class CollectorBot : MonoBehaviour
         _basePosition = basePosition;
     }
 
-    public void GetTarget(Transform resource)
+    public void SetTarget(Transform resource)
     {
         _target = resource;
     }
