@@ -6,13 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(ScannerModule))]
 public class BotsBase : MonoBehaviour
 {
+    public event Action<int> ResourceAdded;
+
     [SerializeField] private CollectorBot[] _startBots;
 
     private ScannerModule _scanner;
     private List<CollectorBot> _bots;
     private List<Resource> _freeResources;
     private List<Resource> _busyResources;
-    private int _resourceCount;
     private Coroutine _findingCoroutine;
 
     private void Awake()
@@ -42,9 +43,8 @@ public class BotsBase : MonoBehaviour
 
     public void AddResource(CollectorBot bot, Resource resource)
     {
-        _resourceCount++;
-        Debug.Log(_resourceCount);
-        
+        ResourceAdded?.Invoke(1);
+
         _busyResources.Remove(resource);
         
         Destroy(resource.gameObject);
