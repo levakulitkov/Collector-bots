@@ -6,14 +6,14 @@ public class CollectorBot : MonoBehaviour
     private Transform _basePosition;
     private Transform _target;
     private Mover _mover;
-    private Bag _bag;
+    private ResourceCarrier _resourceCarrier;
 
     public bool HasTarget => _target != null;
 
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _bag = GetComponentInChildren<Bag>();
+        _resourceCarrier = GetComponentInChildren<ResourceCarrier>();
     }
 
     private void FixedUpdate()
@@ -27,7 +27,7 @@ public class CollectorBot : MonoBehaviour
         if (other.TryGetComponent(out Resource freeResource)
             && freeResource.transform.Equals(_target))
         {
-            _bag.Add(freeResource);
+            _resourceCarrier.Put(freeResource);
             _target = _basePosition;
         }
         else if (_target == _basePosition)
@@ -38,7 +38,7 @@ public class CollectorBot : MonoBehaviour
             {
                 _target = null;
                 
-                botsBase.AddResource(this, _bag.GetResource());
+                botsBase.AddResource(this, _resourceCarrier.Take());
             }
         }
     }
