@@ -30,16 +30,11 @@ public class CollectorBot : MonoBehaviour
             _resourceCarrier.Put(freeResource);
             _target = _basePosition;
         }
-        else if (_target == _basePosition)
+        else if (_target == _basePosition && other.TryGetComponent(out BotsBase botsBase))
         {
-            var botsBase = other.GetComponentInParent<BotsBase>();
-            
-            if (botsBase != null)
-            {
-                _target = null;
-                
-                botsBase.AddResource(this, _resourceCarrier.Take());
-            }
+            _target = null;
+
+            botsBase.AddResource(this, _resourceCarrier.Take());
         }
     }
 
