@@ -3,17 +3,17 @@ using UnityEngine;
 [RequireComponent(typeof(Mover))]
 public class CollectorBot : MonoBehaviour
 {
+    [SerializeField] private ResourceCarrier _resourceCarrier;
+    
     private Transform _basePosition;
     private Transform _target;
     private Mover _mover;
-    private ResourceCarrier _resourceCarrier;
 
     public bool HasTarget => _target != null;
 
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _resourceCarrier = GetComponentInChildren<ResourceCarrier>();
     }
 
     private void FixedUpdate()
