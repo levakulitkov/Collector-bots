@@ -9,9 +9,10 @@ public class ScannerModule : MonoBehaviour
     [SerializeField] private float _interval = 1f;
     [SerializeField] private int _maxColliders = 16;
     [SerializeField] private int _radius = 100;
-    
+    [SerializeField] private LayerMask _layerMask;
+
     public event Action<Resource[]> ScanningCompleted;
-    
+
     public IEnumerator FindFreeResources(Resource[] busyResources)
     {
         var wait = new WaitForSeconds(_interval);
@@ -37,7 +38,7 @@ public class ScannerModule : MonoBehaviour
     private Resource[] ScanWithOverlapSphere()
     {
         Collider[] hitColliders = new Collider[_maxColliders];
-        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _radius, hitColliders, LayerMask.GetMask("Resource"));
+        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _radius, hitColliders, _layerMask);
 
         var resources = new List<Resource>();
         for (int i = 0; i < numColliders; i++)
