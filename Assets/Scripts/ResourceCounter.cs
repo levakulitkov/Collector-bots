@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class ResourceCounter : MonoBehaviour
 {
-    public event Action<int> Changed;
-    public int Count => _count;
-
     [SerializeField] private BotsBase _botsBase;
-
+    
     private int _count;
+    
+    public event Action<int> Changed;
+
+    public int Count => _count;
 
     private void OnEnable()
     {

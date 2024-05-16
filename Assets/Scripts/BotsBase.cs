@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(ScannerModule))]
 public class BotsBase : MonoBehaviour
 {
-    public event Action<int> ResourceAdded;
-
     [SerializeField] private CollectorBot[] _startBots;
 
     private ScannerModule _scanner;
@@ -15,6 +13,8 @@ public class BotsBase : MonoBehaviour
     private List<Resource> _freeResources;
     private List<Resource> _busyResources;
     private Coroutine _findingCoroutine;
+
+    public event Action<int> ResourceAdded;
 
     private void Awake()
     {
