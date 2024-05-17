@@ -59,7 +59,7 @@ public class BotsBase : MonoBehaviour
 
     private void OnGetScanningResults(Resource[] detectedResources)
     {
-        _freeResources = detectedResources.ToList();
+        _freeResources = detectedResources.Except(_busyResources).ToList();
 
         foreach (CollectorBot bot in _bots.Where(bot => !bot.HasTarget))
             if (!TryAssignTargetResourceForBot(bot))
