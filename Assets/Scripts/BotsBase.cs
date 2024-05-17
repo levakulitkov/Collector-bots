@@ -19,11 +19,11 @@ public class BotsBase : MonoBehaviour
     private void Awake()
     {
         _scanner = GetComponent<ScannerModule>();
-        _bots = new List<CollectorBot>(_startBots);
+        _bots = new List<CollectorBot>();
         _busyResources = new List<Resource>();
 
-        foreach (CollectorBot bot in _bots)
-            bot.AssignBase(transform);
+        foreach (CollectorBot bot in _startBots)
+            AddBot(bot);
     }
 
     private void OnEnable()
@@ -39,6 +39,12 @@ public class BotsBase : MonoBehaviour
     private void Start()
     {
         StartFindingResources();
+    }
+
+    public void AddBot(CollectorBot bot)
+    {
+        _bots.Add(bot);
+        bot.AssignBase(transform);
     }
 
     public void AddResource(CollectorBot bot, Resource resource)
