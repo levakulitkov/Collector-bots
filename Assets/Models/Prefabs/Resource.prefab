@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2138166886287273836}
   - component: {fileID: 2217393918967612862}
   - component: {fileID: 5741903850430750192}
-  - component: {fileID: 6283034046953985577}
+  - component: {fileID: 1068465240933951737}
   m_Layer: 3
   m_Name: Resource
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2138166886287273836
 MeshFilter:
@@ -106,7 +106,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6283034046953985577
+--- !u!114 &1068465240933951737
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,6 +115,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6756210476569265373}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fb10ab676f58ee428a2a0d87cfa3c74, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f1f41ebf3f398f4190037f8ed2a5d74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

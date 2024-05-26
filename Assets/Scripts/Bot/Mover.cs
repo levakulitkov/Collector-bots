@@ -11,9 +11,14 @@ public class Mover : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
-    
+
     public void Move()
     {
         _rigidbody.velocity = transform.forward * _speed;
+    }
+
+    public void Stop()
+    {
+        _rigidbody.velocity = Vector3.zero;
     }
 }

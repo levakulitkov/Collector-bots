@@ -4,15 +4,15 @@ using Random = UnityEngine.Random;
 
 public class ResourceGenerator : MonoBehaviour
 {
-    [SerializeField] private Resource _template;
+    [SerializeField] private SpawnedResource _template;
     [SerializeField] private float _interval;
-    
+
     private float _minGenerationPosX;
     private float _maxGenerationPosX;
     private float _minGenerationPosZ;
     private float _maxGenerationPosZ;
     private Coroutine _coroutine;
-    
+
     private void Awake()
     {
         _minGenerationPosX = transform.position.x - transform.localScale.x / 2;
@@ -37,20 +37,20 @@ public class ResourceGenerator : MonoBehaviour
     private IEnumerator GeneratingRoutine()
     {
         var wait = new WaitForSeconds(_interval);
-        
+
         while (enabled)
         {
             Generate();
-            
+
             yield return wait;
         }
     }
-    
+
     private void Generate()
     {
         float posX = Random.Range(_minGenerationPosX, _maxGenerationPosX);
         float posZ = Random.Range(_minGenerationPosZ, _maxGenerationPosZ);
-        var position = new Vector3(posX, transform.position.y, posZ);
-        Resource resource = Instantiate(_template, position, Quaternion.identity);
+        var position = new Vector3(posX, transform.position.y + _template.transform.localScale.y / 2, posZ);
+        Instantiate(_template, position, Quaternion.identity);
     }
 }

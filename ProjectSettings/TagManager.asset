@@ -11,10 +11,10 @@ TagManager:
   - Resource
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Generator
+  - BaseFlag
+  - Base
   - 
   - 
   - 

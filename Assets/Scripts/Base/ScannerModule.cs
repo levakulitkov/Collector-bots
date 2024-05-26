@@ -11,39 +11,41 @@ public class ScannerModule : MonoBehaviour
     [SerializeField] private int _radius = 100;
     [SerializeField] private LayerMask _layerMask;
 
-    public event Action<Resource[]> ScanningCompleted;
+    public event Action<SpawnedResource[]> ScanningCompleted;
 
-    public IEnumerator FindFreeResources(Resource[] busyResources)
+    public IEnumerator FindFreeResources(SpawnedResource[] busyResources)
     {
         var wait = new WaitForSeconds(_interval);
-        
+
         while (true)
         {
-            Resource[] detectedResources = ScanWithOverlapSphere();
-            Resource[] freeResources = detectedResources
+            SpawnedResource[] detectedResources = ScanWithOverlapSphere();
+            SpawnedResource[] freeResources = detectedResources
                 .Except(busyResources)
-                .Where(resource => resource.enabled)
+                .OrderBy(r => (r.transform.position - transform.position).sqrMagnitude)
                 .ToArray();
-            
+
             if (freeResources.Length > 0)
             {
                 ScanningCompleted?.Invoke(freeResources);
                 yield break;
             }
-            
+
             yield return wait;
         }
     }
 
-    private Resource[] ScanWithOverlapSphere()
+    private SpawnedResource[] ScanWithOverlapSphere()
     {
         Collider[] hitColliders = new Collider[_maxColliders];
-        int numColliders = Physics.OverlapSphereNonAlloc(transform.position, _radius, hitColliders, _layerMask);
+        int colliders = Physics.OverlapSphereNonAlloc(transform.position, _radius,
+            hitColliders, _layerMask);
 
-        var resources = new List<Resource>();
-        for (int i = 0; i < numColliders; i++)
+        var resources = new List<SpawnedResource>();
+        for (int i = 0; i < colliders; i++)
         {
-            if (hitColliders[i].TryGetComponent(out Resource resource))
+            if (hitColliders[i].TryGetComponent(out SpawnedResource resource)
+                && resource.enabled)
                 resources.Add(resource);
         }
 
