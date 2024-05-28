@@ -30,10 +30,11 @@ public class BotCreationModule : MonoBehaviour
     private IEnumerator BotCreatingRoutine()
     {
         _inProgress = true;
+        var wait = new WaitForSeconds(_creationDuration);
 
         while (_ñreationRequestCount > 0)
         {
-            yield return new WaitForSeconds(_creationDuration);
+            yield return wait;
 
             CollectorBot bot = Instantiate(_template,
                 _spawnPoint.position, Quaternion.identity);
