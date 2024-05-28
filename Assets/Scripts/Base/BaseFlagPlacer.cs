@@ -32,7 +32,7 @@ public class BaseFlagPlacer : MonoBehaviour
             return false;
 
         hitBotsBase.AddNewBaseFlag(_flag);
-        _flag.RemoveColorBox();
+        _flag.RemoveColorIndication();
 
         _flag = null;
         return true;

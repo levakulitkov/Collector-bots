@@ -26,16 +26,14 @@ public class BaseCreationModule : MonoBehaviour
     {
         yield return new WaitForSeconds(_creationDuration);
 
-        Vector3 pos = new(baseFlag.transform.position.x,
+        Vector3 position = new(baseFlag.transform.position.x,
             _template.transform.position.y, baseFlag.transform.position.z);
         BotsBase botsBase = Instantiate(_template, baseFlag.transform.parent);
 
         Destroy(baseFlag.gameObject);
 
-        botsBase.transform.position = pos;
+        botsBase.transform.position = position;
 
         Created?.Invoke(botsBase);
-
-        _coroutine = null;
     }
 }

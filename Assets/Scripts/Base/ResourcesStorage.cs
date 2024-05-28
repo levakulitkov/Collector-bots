@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class ResourcesStorage : MonoBehaviour
 {
-    public event Action<int> CountChanged;
-
     private int _resourcesCount;
-    private bool _accumulateResourcesForNewBase = false;
+    private bool _accumulateResourcesForNewBase;
 
+    public event Action<int> CountChanged;
     public event Action<Resource> ResourcesForBaseAccumulated;
-
     public event Action<Resource> ResourcesForBotAccumulated;
 
     public void AddResources(Resource resource)
@@ -54,5 +52,8 @@ public class ResourcesStorage : MonoBehaviour
     }
 
     private void DecreaseResources—ount(int value)
-        => IncreaseResources—ount(-value);
+    {
+        _resourcesCount -= value;
+        CountChanged?.Invoke(_resourcesCount);
+    }
 }

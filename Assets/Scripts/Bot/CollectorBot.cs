@@ -111,7 +111,7 @@ public class CollectorBot : MonoBehaviour
             (Resource resourceForBase, Transform baseFlag) =
                 botsBase.GetResourcesAndPositionForNewBase();
 
-            if (_resourceCarrier.TryPut(resourceForBase, true))
+            if (_resourceCarrier.TryPutForBase(resourceForBase))
                 SetTarget(baseFlag);
         }
     }

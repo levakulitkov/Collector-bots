@@ -21,7 +21,7 @@ public class BaseFlag : MonoBehaviour
         UpdatePlacementColor();
     }
 
-    public void RemoveColorBox()
+    public void RemoveColorIndication()
     {
         if (_colorBox.enabled)
             _colorBox.enabled = false;

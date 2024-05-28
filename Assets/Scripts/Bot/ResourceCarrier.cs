@@ -15,15 +15,23 @@ public class ResourceCarrier : MonoBehaviour
         _renderer = GetComponent<Renderer>();
     }
 
-    public bool TryPut(Resource resource, bool forBase = false)
+    public bool TryPut(Resource resource)
     {
         if (_resource != null)
             return false;
 
-        if (forBase)
-            _renderer.material = _baseResourceMaterial;
-        else
-            _renderer.material = _resourceMaterial;
+        _renderer.material = _resourceMaterial;
+
+        _resource = resource;
+        return true;
+    }
+    
+    public bool TryPutForBase(Resource resource)
+    {
+        if (_resource != null)
+            return false;
+
+        _renderer.material = _baseResourceMaterial;
 
         _resource = resource;
         return true;

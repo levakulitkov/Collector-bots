@@ -29,14 +29,14 @@ public class BotsBase : MonoBehaviour
         _bots = new List<CollectorBot>();
         _detectedResources = new List<SpawnedResource>();
 
-        _scanner.ScanningCompleted += OnGetScanningResults;
+        _scanner.ScanningCompleted += OnScanningCompleted;
         _resourcesStorage.ResourcesForBotAccumulated += OnAccumulatedResourcesForBot;
         _resourcesStorage.ResourcesForBaseAccumulated += OnAccumulatedResourcesForBase;
     }
 
     private void OnDisable()
     {
-        _scanner.ScanningCompleted -= OnGetScanningResults;
+        _scanner.ScanningCompleted -= OnScanningCompleted;
         _resourcesStorage.ResourcesForBotAccumulated -= OnAccumulatedResourcesForBot;
         _resourcesStorage.ResourcesForBaseAccumulated -= OnAccumulatedResourcesForBase;
     }
@@ -114,7 +114,7 @@ public class BotsBase : MonoBehaviour
         return true;
     }
 
-    private void OnGetScanningResults(SpawnedResource[] detectedResources)
+    private void OnScanningCompleted(SpawnedResource[] detectedResources)
     {
         _busyResources = _busyResources.Where(resource => resource != null).ToList();
         _detectedResources = detectedResources.Except(_busyResources).ToList();

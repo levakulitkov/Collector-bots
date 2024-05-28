@@ -15,10 +15,13 @@ public class ResourceGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _minGenerationPosX = transform.position.x - transform.localScale.x / 2;
-        _maxGenerationPosX = transform.position.x + transform.localScale.x / 2;
-        _minGenerationPosZ = transform.position.z - transform.localScale.z / 2;
-        _maxGenerationPosZ = transform.position.z + transform.localScale.z / 2;
+        float halfExtentX = transform.localScale.x / 2;
+        float halfExtentZ = transform.localScale.z / 2;
+
+        _minGenerationPosX = transform.position.x - halfExtentX;
+        _maxGenerationPosX = transform.position.x + halfExtentX;
+        _minGenerationPosZ = transform.position.z - halfExtentZ;
+        _maxGenerationPosZ = transform.position.z + halfExtentZ;
     }
 
     private void OnEnable()
@@ -50,7 +53,9 @@ public class ResourceGenerator : MonoBehaviour
     {
         float posX = Random.Range(_minGenerationPosX, _maxGenerationPosX);
         float posZ = Random.Range(_minGenerationPosZ, _maxGenerationPosZ);
-        var position = new Vector3(posX, transform.position.y + _template.transform.localScale.y / 2, posZ);
+        float resourceRadius = _template.transform.localScale.y / 2;
+
+        var position = new Vector3(posX, transform.position.y + resourceRadius, posZ);
         Instantiate(_template, position, Quaternion.identity);
     }
 }
