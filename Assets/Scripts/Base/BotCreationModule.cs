@@ -9,7 +9,7 @@ public class BotCreationModule : MonoBehaviour
     [SerializeField] private float _spawnForce = 5f;
     [SerializeField] private BotsBase _botsBase;
 
-    private int _ñreationRequestCount;
+    private int _creationRequestCount;
     private bool _inProgress;
 
     public bool InProgress => _inProgress;
@@ -19,7 +19,7 @@ public class BotCreationModule : MonoBehaviour
         if (resource.Amount < Constants.BotPrice)
             return false;
 
-        _ñreationRequestCount++;
+        _creationRequestCount++;
 
         if (!_inProgress)
             StartCoroutine(BotCreatingRoutine());
@@ -30,10 +30,11 @@ public class BotCreationModule : MonoBehaviour
     private IEnumerator BotCreatingRoutine()
     {
         _inProgress = true;
+        var wait = new WaitForSeconds(_creationDuration);
 
-        while (_ñreationRequestCount > 0)
+        while (_creationRequestCount > 0)
         {
-            yield return new WaitForSeconds(_creationDuration);
+            yield return wait;
 
             CollectorBot bot = Instantiate(_template,
                 _spawnPoint.position, Quaternion.identity);
@@ -42,7 +43,7 @@ public class BotCreationModule : MonoBehaviour
                 rb.AddForce(_spawnPoint.forward * _spawnForce, ForceMode.Impulse);
 
             _botsBase.AddBot(bot);
-            _ñreationRequestCount--;
+            _creationRequestCount--;
         }
 
         _inProgress = false;
